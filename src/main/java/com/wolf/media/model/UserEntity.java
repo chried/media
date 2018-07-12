@@ -5,6 +5,11 @@ import com.wolf.media.core.entity.AbstractEntity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * 用户实体类.
+ *
+ * @author chried
+ */
 @Entity
 @Table(name = "user")
 @AttributeOverrides({
@@ -58,4 +63,68 @@ public class UserEntity extends AbstractEntity {
      */
     @Column(name = "u_lock")
     private LocalDateTime lock;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDateTime getLock() {
+        return lock;
+    }
+
+    public void setLock(LocalDateTime lock) {
+        this.lock = lock;
+    }
 }

@@ -29,7 +29,7 @@ public class ApiOutput<T> implements Serializable {
     /**
      * 默认构造器.
      */
-    private ApiOutput() {
+    public ApiOutput() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class ApiOutput<T> implements Serializable {
      *
      * @return
      */
-    public ApiOutput of() {
+    public static ApiOutput of() {
         return new ApiOutput();
     }
 
@@ -56,7 +56,7 @@ public class ApiOutput<T> implements Serializable {
      * @param data
      * @return
      */
-    public ApiOutput of(T data) {
+    public static <T> ApiOutput of(T data) {
         return new ApiOutput(data);
     }
 
