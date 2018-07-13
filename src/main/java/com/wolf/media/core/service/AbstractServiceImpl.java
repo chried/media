@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -85,11 +84,12 @@ public abstract class AbstractServiceImpl<E extends AbstractEntity> implements A
 
         entity.setId(UUID.randomUUID().toString());
         //当前数据版本1.
-        entity.setVersion(1);
-        entity.setInsert_(LocalDateTime.now());
-        entity.setUpdate_(entity.getInsert_());
-        entity.setDelete_(entity.getInsert_());
-        entity.setStatus_(EntityParameter.ACTIVE_);
+        entity.getExtend().setVersion(1);
+        LocalDateTime currentTime = LocalDateTime.now();
+        entity.getExtend().setInsert_(currentTime);
+        entity.getExtend().setUpdate_(currentTime);
+        entity.getExtend().setDelete_(currentTime);
+        entity.getExtend().setStatus_(EntityParameter.ACTIVE_);
 
         return this.getRepository().save(entity);
     }
@@ -116,7 +116,7 @@ public abstract class AbstractServiceImpl<E extends AbstractEntity> implements A
     @Transactional
     public E modify_(E entity) {
 
-        entity.setUpdate_(LocalDateTime.now());
+        entity.getExtend().setUpdate_(LocalDateTime.now());
 
         return this.getRepository().save(entity);
     }

@@ -1,9 +1,14 @@
 package com.wolf.media.model;
 
 import com.wolf.media.core.entity.AbstractEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户实体类.
@@ -11,38 +16,38 @@ import java.time.LocalDateTime;
  * @author chried
  */
 @Entity
-@Table(name = "user")
+@Table(schema = "m_system", name = "s_user")
 @AttributeOverride(name = "id", column = @Column(name = "u_id", updatable = false, length = 40))
 public class UserEntity extends AbstractEntity {
 
     /**
      * 用户编号，全球唯一.
      */
-    @Column(name = "u_code")
+    @Column(name = "u_code", length = 15)
     private String code;
 
     /**
      * 名称.
      */
-    @Column(name = "u_name")
+    @Column(name = "u_name", length = 20)
     private String name;
 
     /**
      * 用户名.
      */
-    @Column(name = "u_username")
+    @Column(name = "u_username", length = 20)
     private String username;
 
     /**
      * 密码.
      */
-    @Column(name = "u_password")
+    @Column(name = "u_password", length = 50)
     private String password;
 
     /**
      * 头像.
      */
-    @Column(name = "u_portrait")
+    @Column(name = "u_portrait", length = 200)
     private String portrait;
 
     /**
@@ -54,13 +59,22 @@ public class UserEntity extends AbstractEntity {
     /**
      * 电话.
      */
-    @Column(name = "u_phone")
+    @Column(name = "u_phone", length = 20)
     private String phone;
+
     /**
      * 锁定时间.
      */
     @Column(name = "u_lock")
     private LocalDateTime lock;
+
+    /**
+     * 一个用户可能多个角色.
+     */
+    @OneToMany(targetEntity = RoleEntity.class)
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "userId", updatable = false, columnDefinition = "u_id")
+    private List<RoleEntity> roles;
 
     public String getCode() {
         return code;
@@ -124,5 +138,13 @@ public class UserEntity extends AbstractEntity {
 
     public void setLock(LocalDateTime lock) {
         this.lock = lock;
+    }
+
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
     }
 }
