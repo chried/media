@@ -1,6 +1,7 @@
 package com.wolf.media.core.entity;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -19,33 +20,41 @@ public class AbstractEntity implements Serializable {
      * 主键.
      */
     @Id
-    @Column(name = "id")
     private String id;
 
     /**
      * 定义状态.
      */
-    @Column(name = "m_status")
+    @Column(name = "z_status")
     private String status_;
 
     /**
      * 定义创建时间.
      */
-    @Column(name = "m_insert")
-    private LocalDateTime inert_;
+    @Column(name = "z_insert", updatable = false)
+    private LocalDateTime insert_;
 
 
     /**
      * 定义更新时间.
      */
-    @Column(name = "m_update")
+    @Column(name = "z_update")
     private LocalDateTime update_;
 
     /**
      * 定义删除时间.
      */
-    @Column(name = "m_delete")
+    @Column(name = "z_delete")
     private LocalDateTime delete_;
+
+    /**
+     * 数据版本.
+     * <pre>
+     *     从1开始.
+     * </pre>
+     */
+    @Column(name = "z_version")
+    private int version;
 
 
     public String getId() {
@@ -56,6 +65,7 @@ public class AbstractEntity implements Serializable {
         this.id = id;
     }
 
+
     public String getStatus_() {
         return status_;
     }
@@ -64,12 +74,12 @@ public class AbstractEntity implements Serializable {
         this.status_ = status_;
     }
 
-    public LocalDateTime getInert_() {
-        return inert_;
+    public LocalDateTime getInsert_() {
+        return insert_;
     }
 
-    public void setInert_(LocalDateTime inert_) {
-        this.inert_ = inert_;
+    public void setInsert_(LocalDateTime insert_) {
+        this.insert_ = insert_;
     }
 
     public LocalDateTime getUpdate_() {
@@ -86,5 +96,13 @@ public class AbstractEntity implements Serializable {
 
     public void setDelete_(LocalDateTime delete_) {
         this.delete_ = delete_;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

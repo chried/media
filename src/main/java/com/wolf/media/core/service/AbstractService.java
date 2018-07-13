@@ -8,7 +8,24 @@ import com.wolf.media.core.entity.AbstractEntity;
  *
  * @author chried
  */
-public interface AbstractService<T extends AbstractEntity, S> {
+public interface AbstractService<E extends AbstractEntity> {
+
+
+    /**
+     * 新增.
+     *
+     * @param entity 对象.
+     * @return 实体.
+     */
+    ApiOutput<E> add(E entity);
+
+    /**
+     * 新增.
+     *
+     * @param entity 对象.
+     * @return 实体.
+     */
+    E add_(E entity);
 
     /**
      * 保存.
@@ -16,7 +33,7 @@ public interface AbstractService<T extends AbstractEntity, S> {
      * @param entity 实体类.
      * @return 返回对象.
      */
-    ApiOutput<T> save(T entity);
+    ApiOutput<E> save(E entity);
 
     /**
      * 保存.
@@ -24,5 +41,47 @@ public interface AbstractService<T extends AbstractEntity, S> {
      * @param entity 实体类.
      * @return 返回对象.
      */
-    T save_(T entity);
+    E save_(E entity);
+
+    /**
+     * 修改.
+     *
+     * @param entity
+     * @return
+     */
+    ApiOutput<E> modify(E entity);
+
+
+    /**
+     * 修改.
+     *
+     * @param entity
+     * @return
+     */
+    E modify_(E entity);
+
+    /**
+     * 获取对象.
+     *
+     * @param id 主键ID.
+     * @return 对象.
+     */
+    ApiOutput<E> get(String id);
+
+    /**
+     * 获取对象.
+     *
+     * @param id 主键ID.
+     * @return 对象.
+     */
+    E get_(String id);
+
+
+    /**
+     * 初始化对象.
+     *
+     * @param id 主键ID.
+     * @return 对象.
+     */
+    ApiOutput<E> getOfEdit(String id);
 }

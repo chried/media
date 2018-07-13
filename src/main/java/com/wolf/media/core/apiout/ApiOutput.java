@@ -56,7 +56,7 @@ public class ApiOutput<T> implements Serializable {
      * @param data
      * @return
      */
-    public static <T> ApiOutput of(T data) {
+    public static <TD> ApiOutput of(TD data) {
         return new ApiOutput(data);
     }
 

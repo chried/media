@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "user")
-@AttributeOverrides({
-        @AttributeOverride(name = "id", column = @Column(name = "u_id"))
-})
+@AttributeOverride(name = "id", column = @Column(name = "u_id", updatable = false, length = 40))
 public class UserEntity extends AbstractEntity {
 
     /**
@@ -32,13 +30,13 @@ public class UserEntity extends AbstractEntity {
     /**
      * 用户名.
      */
-    @Column(name = "username")
+    @Column(name = "u_username")
     private String username;
 
     /**
      * 密码.
      */
-    @Column(name = "password")
+    @Column(name = "u_password")
     private String password;
 
     /**
