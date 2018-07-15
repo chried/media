@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author chried
+ */
 @RestController
 @RequestMapping(value = "role")
 public class RoleController {
@@ -26,10 +29,5 @@ public class RoleController {
         roleEntity.setName("管理员");
         roleEntity.setSign("Manager");
         return roleEntity;
-    }
-
-    @RequestMapping(value = "auth")
-    public ApiOutput<String> auth() {
-        return userService.authorizeRole();
     }
 }

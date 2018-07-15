@@ -46,8 +46,8 @@ public class UserServiceImplTest {
     @Transactional
     public void test_授予角色() {
         List<RoleEntity> roleEntities = this.roleService.queryAll();
-        UserEntity userEntity = this.userService.get_("0b2e82bf-3b0c-4e3e-869f-110d3a53a835");
-        userEntity.setRoles(roleEntities);
+        UserEntity userEntity = this.userService.get_("5938f865-47b8-4ef0-9815-c8777acc7663");
+        userEntity.getRoles().addAll(roleEntities);
         this.userService.save(userEntity);
     }
 

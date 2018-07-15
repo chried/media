@@ -71,9 +71,7 @@ public class UserEntity extends AbstractEntity {
     /**
      * 一个用户可能多个角色.
      */
-    @OneToMany(targetEntity = RoleEntity.class)
-    @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "userId", updatable = false, columnDefinition = "u_id")
+    @OneToMany(mappedBy = "userEntity", cascade = {CascadeType.ALL}, targetEntity = RoleEntity.class)
     private List<RoleEntity> roles;
 
     public String getCode() {

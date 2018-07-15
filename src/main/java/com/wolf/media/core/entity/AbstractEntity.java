@@ -3,6 +3,7 @@ package com.wolf.media.core.entity;
 import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 
@@ -21,6 +22,12 @@ public class AbstractEntity implements Serializable {
     private String id;
 
     /**
+     * 是否验证.
+     */
+    @Transient
+    private boolean valid;
+
+    /**
      * 扩展属性.
      */
     @Embedded
@@ -36,6 +43,14 @@ public class AbstractEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public Extend getExtend() {

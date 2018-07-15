@@ -5,14 +5,12 @@ import com.wolf.media.core.apiout.ApiOutput;
 import com.wolf.media.core.dao.AbstractRepository;
 import com.wolf.media.core.service.AbstractServiceImpl;
 import com.wolf.media.dao.UserRepository;
-import com.wolf.media.model.AuthorityEntity;
-import com.wolf.media.model.RoleEntity;
 import com.wolf.media.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author chried
@@ -25,6 +23,9 @@ public class UserServiceImpl extends AbstractServiceImpl<UserEntity> implements 
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private AuthorityService authorityService;
 
     /**
      * 获取Repository.
@@ -51,12 +52,8 @@ public class UserServiceImpl extends AbstractServiceImpl<UserEntity> implements 
      */
     @Override
     @Transactional
-    public ApiOutput<String> authorizeRole() {
+    public ApiOutput<String> authorizeRole(Collection<String> roleIds) {
 
-        List<RoleEntity> roleEntities = this.roleService.queryAll();
-        UserEntity userEntity = this.get_("0b2e82bf-3b0c-4e3e-869f-110d3a53a835");
-        userEntity.setRoles(roleEntities);
-        this.save(userEntity);
 
         return ApiOutput.of("操作成功");
     }

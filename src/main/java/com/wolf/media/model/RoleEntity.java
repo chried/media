@@ -48,9 +48,11 @@ public class RoleEntity extends AbstractEntity {
     @Column(name = "r_note", length = 200)
     private String note;
 
-    @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "userId", updatable = false)
-    @NotFound(action = NotFoundAction.IGNORE)
+    /**
+     * 所属员工.
+     */
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = UserEntity.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
