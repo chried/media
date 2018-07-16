@@ -4,12 +4,16 @@ import com.wolf.media.core.apiout.ApiOutput;
 import com.wolf.media.core.dao.AbstractRepository;
 import com.wolf.media.core.entity.AbstractEntity;
 import com.wolf.media.core.entity.EntityParameter;
+import com.wolf.media.core.entity.Extend;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.*;
+import java.lang.annotation.Annotation;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -20,6 +24,15 @@ import java.util.UUID;
 public abstract class AbstractServiceImpl<E extends AbstractEntity> implements AbstractService<E> {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServiceImpl.class);
+
+    /**
+     * 实体管理器.
+     * <pre>
+     * 按照微服务的设计思想，原则上一个项目只引用一个数据源，只访问一个数据库.
+     * </pre>
+     */
+    @PersistenceContext
+    protected EntityManager em;
 
     /**
      * 获取Repository.
@@ -170,4 +183,175 @@ public abstract class AbstractServiceImpl<E extends AbstractEntity> implements A
         return ApiOutput.of(e);
 
     }
+
+    /**
+     * 假删除.
+     *
+     * @param id 主键ID.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public ApiOutput<Integer> remove(String id) {
+
+        return ApiOutput.of(this.remove_(id));
+
+    }
+
+    /**
+     * 假删除.
+     *
+     * @param id 主键ID.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public int remove_(String id) {
+
+        E e = this.get_(id);
+        Extend extend = e.getExtend();
+        extend.setStatus_(EntityParameter.REMOVE);
+        e.setExtend(extend);
+
+        this.getRepository().save(e);
+
+        return 1;
+
+    }
+
+    /**
+     * 批量假删除.
+     *
+     * @param ids 主键IDS.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public ApiOutput<Integer> removeBatch(Collection<String> ids) {
+
+        return ApiOutput.of(this.removeBatch_(ids));
+
+    }
+
+    /**
+     * 批量假删除.
+     *
+     * @param ids 主键IDS.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public int removeBatch_(Collection<String> ids) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String id : ids) {
+            sb.append("'" + id + "'" + ",");
+        }
+
+        String sql = "UPDATE " + this.getClazz().getName() + " E SET E.extend.status_='" +
+                EntityParameter.REMOVE + "' WHERE E.id in (" + sb.substring(0, sb.length() - 1) + ")";
+
+        Query query = em.createQuery(sql);
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * 批量删除.
+     *
+     * @param ids 主键IDS.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public ApiOutput<Integer> deleteBatch(Collection<String> ids) {
+
+        return ApiOutput.of(this.deleteBatch_(ids));
+
+    }
+
+    /**
+     * 批量删除.
+     *
+     * @param ids 主键IDS.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public int deleteBatch_(Collection<String> ids) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String id : ids) {
+            sb.append("'" + id + "'" + ",");
+        }
+
+        String sql = "DELETE " + this.getClazz().getName() + " E WHERE E.id IN (" + sb.substring(0, sb.length() - 1) + ")";
+
+        Query query = em.createQuery(sql);
+
+        return query.executeUpdate();
+
+    }
+
+    /**
+     * 删除.
+     *
+     * @param id 主键ID.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public ApiOutput<Integer> delete(String id) {
+
+        return ApiOutput.of(this.delete_(id));
+
+    }
+
+    /**
+     * 删除.
+     *
+     * @param id 主键ID.
+     * @return 删除个数.
+     */
+    @Override
+    @Transactional
+    public int delete_(String id) {
+
+        this.getRepository().deleteById(id);
+
+        return 1;
+
+    }
+
+    /**
+     * 获取表名.
+     *
+     * @return 表名.
+     */
+    private String getTableName() {
+
+        Table table = this.getClazz().getAnnotation(Table.class);
+
+        return table.name();
+    }
+
+    /**
+     * 获取主键ID.
+     *
+     * @return 主键id.
+     */
+    private String getId() {
+
+        AttributeOverride attributeOverride = this.getClazz().getAnnotation(AttributeOverride.class);
+
+        if (attributeOverride == null) {
+            return "id";
+        }
+
+        return attributeOverride.column().name();
+
+    }
+
 }

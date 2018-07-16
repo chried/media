@@ -8,6 +8,7 @@ import com.wolf.media.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
  * @author chried
@@ -23,11 +24,11 @@ public class RoleController {
     private UserService userService;
 
     @RequestMapping(value = "add")
-    public RoleEntity add() {
+    public Mono<RoleEntity> add() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setCode("10101");
         roleEntity.setName("管理员");
         roleEntity.setSign("Manager");
-        return roleEntity;
+        return Mono.just(roleEntity);
     }
 }

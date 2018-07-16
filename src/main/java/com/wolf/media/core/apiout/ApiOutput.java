@@ -38,7 +38,9 @@ public class ApiOutput<T> implements Serializable {
      * @param data
      */
     public ApiOutput(T data) {
+        this.code = 100;
         this.data = data;
+        this.msg = "操作成功";
     }
 
     /**

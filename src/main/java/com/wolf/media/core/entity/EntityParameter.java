@@ -20,5 +20,10 @@ public class EntityParameter {
      */
     public static final String SLEEP = "SLEEP";
 
+    /**
+     * 定义删除.
+     */
+    public static final String REMOVE = "REMOVE";
+
 
 }
