@@ -1,8 +1,6 @@
 package com.wolf.media.model;
 
 import com.wolf.media.core.entity.AbstractEntity;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -55,11 +53,23 @@ public class RoleEntity extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
+    /**
+     * 权限.
+     */
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "role_authority", schema = "m_system",
             joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "r_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "a_id")})
     private List<AuthorityEntity> authoritys;
+
+    /**
+     * 菜单.
+     */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "role_menu", schema = "m_system",
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "r_id")},
+            inverseJoinColumns = {@JoinColumn(name = "menu_id", referencedColumnName = "m_id")})
+    private List<MenuEntity> menus;
 
     public String getName() {
         return name;
@@ -115,5 +125,13 @@ public class RoleEntity extends AbstractEntity {
 
     public void setAuthoritys(List<AuthorityEntity> authoritys) {
         this.authoritys = authoritys;
+    }
+
+    public List<MenuEntity> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<MenuEntity> menus) {
+        this.menus = menus;
     }
 }
