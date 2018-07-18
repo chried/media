@@ -64,6 +64,7 @@ public abstract class AbstractServiceImpl<E extends AbstractEntity> implements A
      * @return 返回对象.
      */
     @Override
+    @Transactional
     public E save_(E entity) {
 
         if (StringUtils.isNotBlank(entity.getId())) {

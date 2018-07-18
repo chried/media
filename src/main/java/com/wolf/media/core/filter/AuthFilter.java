@@ -6,16 +6,24 @@ import com.wolf.media.utils.Convert;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 管理系统登录验证.
+ *
  * @author gaoweibing
  */
+@Component
+@ServletComponentScan
+@WebFilter(urlPatterns = "/admin/auth/*", filterName = "authFilter")
 public class AuthFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthFilter.class);
@@ -37,11 +45,15 @@ public class AuthFilter implements Filter {
         String token = this.getToken(request);
 
         if (StringUtils.isBlank(token)) {
+
             response.sendError(999);
+
             ApiOutput<String> apiOutput = new ApiOutput<>();
             apiOutput.error("用户未登录");
             PrintWriter writer = response.getWriter();
             writer.write(Convert.toJson(apiOutput));
+
+            return;
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

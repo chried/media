@@ -110,7 +110,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserEntity> implements 
         tokenCache.setName(entity.getName());
         tokenCache.setUserId(entity.getId());
         tokenCache.setUsername(entity.getUsername());
-        tokenCache.setId(UUID.randomUUID().toString());
+        tokenCache.setToken(UUID.randomUUID().toString());
 
         return tokenCache;
     }

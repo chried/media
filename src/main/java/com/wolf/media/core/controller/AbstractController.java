@@ -1,10 +1,15 @@
 package com.wolf.media.core.controller;
 
+import com.wolf.media.cache.TokenCache;
 import com.wolf.media.core.apiout.ApiOutput;
 import com.wolf.media.core.entity.AbstractEntity;
+import com.wolf.media.core.entity.EntityParameter;
+import com.wolf.media.core.entity.Parameter;
 import com.wolf.media.core.service.AbstractService;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +23,26 @@ public abstract class AbstractController<T extends AbstractEntity> {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractController.class);
 
+    @Autowired
+    private HttpServletRequest request;
+
     /**
      * 获取service.
      *
      * @return
      */
     public abstract AbstractService<T> getService();
+
+    /**
+     * 获取当前token.
+     *
+     * @return
+     */
+    protected TokenCache getToken() {
+
+        return (TokenCache) this.request.getSession().getAttribute(Parameter.TOKEN);
+
+    }
 
     /**
      * save操作.

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -182,6 +183,23 @@ public class ExceptionResolver {
 
         return ApiOutput.of()
                 .error("输入参数不匹配!");
+    }
+
+    /**
+     * 找不到页面..
+     *
+     * @param ex 异常
+     * @return 消息
+     */
+    @ExceptionHandler(TemplateInputException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public ApiOutput<String> processTemplateInputException(TemplateInputException ex) {
+
+        LOG.debug("找不到页面.", ex);
+
+        return ApiOutput.of()
+                .error("找不到页面!");
     }
 
 }

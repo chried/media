@@ -2,6 +2,7 @@ package com.wolf.media.controller.admin;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -16,8 +17,10 @@ public class PageController {
      *
      * @return 首页.
      */
-    @RequestMapping(value = "index")
-    public String index() {
-        return "admin/index";
+    @RequestMapping(value = "{page}")
+    public String index(@PathVariable("page") String page) {
+
+        return "admin/" + page;
+
     }
 }
