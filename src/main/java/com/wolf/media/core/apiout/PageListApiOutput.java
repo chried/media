@@ -19,6 +19,24 @@ public class PageListApiOutput<T> extends ApiOutput<List<T>> {
     }
 
     /**
+     * 构造器
+     *
+     * @param pageNo     当前页.
+     * @param pageSize   每页显示.
+     * @param totalPage  总页数.
+     * @param totalCount 总数.
+     */
+    public PageListApiOutput(int pageNo, int pageSize, int totalPage, long totalCount, List<T> data) {
+
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+        this.totalPage = totalPage;
+        this.totalCount = totalCount;
+        setData(data);
+
+    }
+
+    /**
      * 总数.
      */
     private long totalCount;
@@ -38,12 +56,17 @@ public class PageListApiOutput<T> extends ApiOutput<List<T>> {
      */
     private int pageNo;
 
-    public PageListApiOutput of(Page<T> page) {
-        this.pageNo = page.getPageable().getPageNumber();
-        this.pageSize = page.getPageable().getPageSize();
-        this.totalPage = page.getTotalPages();
-        this.totalCount = page.getTotalElements();
-        return this;
+    /**
+     * 获取分组.
+     *
+     * @param page
+     * @param <E>
+     * @return
+     */
+    public static <E> PageListApiOutput of(Page<E> page) {
+
+        return new PageListApiOutput(page.getPageable().getPageNumber(), page.getPageable().getPageSize(), page.getTotalPages(), page.getTotalElements(), page.getContent());
+
     }
 
     /**
