@@ -5,11 +5,11 @@ import com.wolf.media.core.dao.AbstractRepository;
 import com.wolf.media.core.entity.EntityParameter;
 import com.wolf.media.core.service.AbstractServiceImpl;
 import com.wolf.media.dao.MenuRepository;
+import com.wolf.media.dao.RoleMenuRepository;
 import com.wolf.media.dao.UserRepository;
+import com.wolf.media.dao.UserRoleRepository;
 import com.wolf.media.dto.system.MenuQueryForm;
-import com.wolf.media.model.MenuEntity;
-import com.wolf.media.model.RoleEntity;
-import com.wolf.media.model.UserEntity;
+import com.wolf.media.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author gaoweibing
@@ -34,6 +35,9 @@ public class MenuServiceImpl extends AbstractServiceImpl<MenuEntity> implements 
 
     @Autowired
     private MenuRepository menuRepository;
+
+    @Autowired
+    private RoleMenuRepository roleMenuRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -74,22 +78,20 @@ public class MenuServiceImpl extends AbstractServiceImpl<MenuEntity> implements 
 
         }
 
-        List<MenuEntity> menuEntities = new ArrayList<>();
+        //获取用户角色关系图.
+        List<RoleMenuEntity> roleMenuEntities = this.roleMenuRepository.queryByUserId(userId, EntityParameter.ACTIVE_);
 
-        if (CollectionUtils.isEmpty(userEntity.getRoles())) {
+        if (CollectionUtils.isEmpty(roleMenuEntities)) {
 
-            LOG.error("获取菜单错误，用户没有任何角色");
-            throw new ValidationException("用户没有任何角色.");
-
+            LOG.error("获取菜单错误，没有关联菜单");
+            throw new ValidationException("没有关联菜单.");
         }
 
-        for (RoleEntity role : userEntity.getRoles()) {
+        //获取菜单ids.
+        List<String> menuIds = roleMenuEntities.stream().map(r -> r.getMenuId()).collect(Collectors.toList());
 
-            menuEntities.addAll(role.getMenus());
+        return this.menuRepository.findAllById(menuIds);
 
-        }
-
-        return menuEntities;
     }
 
     /**

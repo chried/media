@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chried
  */
 @RestController("admin$auth$role")
-@RequestMapping(value = "role")
+@RequestMapping(value = "admin/auth/role")
 public class RoleController extends AbstractController<RoleEntity> {
 
     @Autowired

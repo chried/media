@@ -1,5 +1,6 @@
 package com.wolf.media.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wolf.media.core.entity.AbstractEntity;
 
 import javax.persistence.*;
@@ -51,12 +52,6 @@ public class MenuEntity extends AbstractEntity {
     @Column(name = "m_sort", length = 3)
     private int sort;
 
-    /**
-     * 所属角色.
-     */
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "menus")
-    private List<RoleEntity> roles;
-
 
     public String getParentId() {
         return parentId;
@@ -104,13 +99,5 @@ public class MenuEntity extends AbstractEntity {
 
     public void setSort(int sort) {
         this.sort = sort;
-    }
-
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
     }
 }

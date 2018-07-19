@@ -1,5 +1,6 @@
 package com.wolf.media.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wolf.media.core.entity.AbstractEntity;
 
 import javax.persistence.*;
@@ -64,12 +65,6 @@ public class UserEntity extends AbstractEntity {
     @Column(name = "u_lock")
     private LocalDateTime lock;
 
-    /**
-     * 一个用户可能多个角色.
-     */
-    @OneToMany(mappedBy = "userEntity", cascade = {CascadeType.ALL}, targetEntity = RoleEntity.class)
-    private List<RoleEntity> roles;
-
     public String getCode() {
         return code;
     }
@@ -132,13 +127,5 @@ public class UserEntity extends AbstractEntity {
 
     public void setLock(LocalDateTime lock) {
         this.lock = lock;
-    }
-
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
     }
 }

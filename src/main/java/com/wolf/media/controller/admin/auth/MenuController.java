@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author gaoweibing
  */
 @RestController("admin$auth$menu")
-@RequestMapping(value = "menu")
+@RequestMapping(value = "admin/auth/menu")
 public class MenuController extends AbstractController<MenuEntity> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MenuController.class);

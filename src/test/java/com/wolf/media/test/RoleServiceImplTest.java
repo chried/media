@@ -43,7 +43,6 @@ public class RoleServiceImplTest {
     public void test_角色设置权限() {
         List<AuthorityEntity> authorityEntities = authorityService.queryAll();
         RoleEntity roleEntity = this.roleService.get_("3cf831eb-0fd6-465e-80ea-1cff6bab8ce0");
-        roleEntity.setAuthoritys(authorityEntities);
         this.roleService.save(roleEntity);
     }
 }

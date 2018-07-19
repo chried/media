@@ -6,6 +6,7 @@ import com.wolf.media.model.UserEntity;
 import com.wolf.media.service.RoleService;
 import com.wolf.media.service.UserService;
 import com.wolf.media.utils.Convert;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class UserServiceImplTest {
         userEntity.setCode("10201201");
         userEntity.setName("chried");
         userEntity.setUsername("chried");
+        userEntity.setPassword(DigestUtils.md5Hex("123456"));
         ApiOutput<UserEntity> save = userService.save(userEntity);
         LOG.info("result:{}", Convert.toJson(save));
     }
@@ -49,7 +51,6 @@ public class UserServiceImplTest {
         List<RoleEntity> roleEntities = this.roleService.queryAll();
         UserEntity userEntity = this.userService.get_("c76607f4-e2af-4752-8741-a1059fdccdaf");
         for (RoleEntity roleEntity : roleEntities) {
-            roleEntity.setUserEntity(userEntity);
             this.roleService.save(roleEntity);
         }
     }
@@ -58,7 +59,6 @@ public class UserServiceImplTest {
     @Transactional
     public void test_查询用户() {
         UserEntity userEntity = this.userService.get_("0b2e82bf-3b0c-4e3e-869f-110d3a53a835");
-        LOG.info("role:{}", userEntity.getRoles());
         LOG.info("userEntity:{}", userEntity.getName());
     }
 

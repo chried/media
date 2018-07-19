@@ -48,11 +48,6 @@ public class AuthFilter implements Filter {
 
             response.sendError(999);
 
-            ApiOutput<String> apiOutput = new ApiOutput<>();
-            apiOutput.error("用户未登录");
-            PrintWriter writer = response.getWriter();
-            writer.write(Convert.toJson(apiOutput));
-
             return;
         }
 

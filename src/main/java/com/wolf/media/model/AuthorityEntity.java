@@ -1,5 +1,6 @@
 package com.wolf.media.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wolf.media.core.entity.AbstractEntity;
 
 import javax.persistence.*;
@@ -45,11 +46,6 @@ public class AuthorityEntity extends AbstractEntity {
     @Column(name = "a_note", length = 200)
     private String note;
 
-    /**
-     * 所属角色.
-     */
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authoritys")
-    private List<RoleEntity> roles;
 
     public String getName() {
         return name;
@@ -89,13 +85,5 @@ public class AuthorityEntity extends AbstractEntity {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
     }
 }
