@@ -11,13 +11,13 @@
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
                 <div class="formControls col-xs-8">
-                    <input id="username" name="username" type="text" placeholder="账号" class="input-text size-L">
+                    <input id="username" name="username" type="text" placeholder="账号" class="input-text size-L" th:value="chried">
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
                 <div class="formControls col-xs-8">
-                    <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+                    <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L" th:value="123456">
                 </div>
             </div>
             <div class="row cl">
@@ -67,14 +67,14 @@
                 var jsonStr = {username: $("#username").val(), password: $("#password").val()};
 
                 $.ajax({
-                    url: contextPath + 'valid/login',
+                    url: contextPath + '/valid/login',
                     type: 'POST',
                     dataType: "json",
                     contentType: 'application/json;charset=utf-8',
                     data: JSON.stringify(jsonStr),
                     success: function (data) {
                         if (data.code == 100) {
-                            window.location.href = contextPath + "page/index";
+                            window.location.href = contextPath + "/admin/page/index";
                         } else {
                             alert(data.msg);
                         }

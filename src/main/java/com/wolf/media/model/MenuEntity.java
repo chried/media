@@ -23,6 +23,12 @@ public class MenuEntity extends AbstractEntity {
     private String parentId;
 
     /**
+     * 菜单分类.
+     */
+    @Column(name = "m_type", length = 40)
+    private String type;
+
+    /**
      * 名称.
      */
     @Column(name = "m_name", length = 20)
@@ -59,6 +65,14 @@ public class MenuEntity extends AbstractEntity {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {

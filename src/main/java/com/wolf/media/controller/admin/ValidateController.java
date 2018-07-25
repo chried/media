@@ -46,7 +46,7 @@ public class ValidateController {
         HttpSession session = request.getSession();
 
         session.setAttribute(Parameter.TOKEN, tokenCacheApiOutput.getData());
-        session.setAttribute(Parameter.MENU, menuService.getCurrentMenu_(tokenCacheApiOutput.getData().getUserId()));
+        session.setAttribute(Parameter.MENU, menuService.getAdminMenus_(tokenCacheApiOutput.getData().getUserId()));
 
         return ApiOutput.of("登陆成功");
     }

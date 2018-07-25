@@ -46,7 +46,7 @@ public class AuthFilter implements Filter {
 
         if (StringUtils.isBlank(token)) {
 
-            response.sendError(999);
+            response.sendRedirect(request.getContextPath() + "/admin/page/login");
 
             return;
         }

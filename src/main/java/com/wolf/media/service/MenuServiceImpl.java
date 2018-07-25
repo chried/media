@@ -10,6 +10,7 @@ import com.wolf.media.dao.UserRepository;
 import com.wolf.media.dao.UserRoleRepository;
 import com.wolf.media.dto.system.MenuQueryForm;
 import com.wolf.media.model.*;
+import com.wolf.media.vo.system.MenuAdminResult;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -95,6 +98,52 @@ public class MenuServiceImpl extends AbstractServiceImpl<MenuEntity> implements 
     }
 
     /**
+     * 获取用户菜单.
+     *
+     * @param userId 用户id.
+     * @return 菜单列表.
+     */
+    @Override
+    public List<MenuAdminResult> getAdminMenus_(String userId) {
+
+        /**
+         * 获取当前用户所有菜单.
+         */
+        List<MenuEntity> currentMenus = this.getCurrentMenu_(userId);
+
+        if (CollectionUtils.isEmpty(currentMenus)) {
+            LOG.error("获取菜单错误，没有关联菜单");
+            throw new ValidationException("没有关联菜单.");
+        }
+
+        /**
+         * 按照父id,重新组装menu.
+         */
+        Map<String, List<MenuEntity>> parentMenuMap = currentMenus.stream().filter(m -> StringUtils.isNotBlank(m.getParentId())).collect(Collectors.groupingBy(MenuEntity::getParentId));
+
+        //菜单返回结果.
+        List<MenuAdminResult> results = new ArrayList<>();
+
+        for (MenuEntity menuEntity : currentMenus) {
+            if (StringUtils.equalsIgnoreCase("-", menuEntity.getParentId())) {
+
+                //找出当前父节点子菜单.
+                List<MenuEntity> childMenus = parentMenuMap.get(menuEntity.getId());
+
+                MenuAdminResult menuAdminResult = new MenuAdminResult();
+
+                menuAdminResult.setMenu(menuEntity);
+                menuAdminResult.setMenus(childMenus);
+
+                results.add(menuAdminResult);
+            }
+
+        }
+
+        return results;
+    }
+
+    /**
      * 查询.
      *
      * @param form
@@ -108,9 +157,10 @@ public class MenuServiceImpl extends AbstractServiceImpl<MenuEntity> implements 
 
 
         Page<MenuEntity> page = this.menuRepository.query(
+                StringUtils.isBlank(form.getParentId()) ? "-" : form.getParentId(),
                 StringUtils.isBlank(form.getName()) ? "%" : form.getName(),
                 StringUtils.isBlank(form.getSign()) ? "%" : form.getSign(),
-                EntityParameter.ACTIVE_, PageRequest.of(0, 2)
+                EntityParameter.ACTIVE_, PageRequest.of(form.getPage() - 1, form.getLimit())
         );
 
         return PageListApiOutput.of(page);

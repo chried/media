@@ -10,6 +10,7 @@ import com.wolf.media.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,7 @@ public class UserController extends AbstractController<UserEntity> {
     /**
      * 退出.
      */
-    @PostMapping(value = "logout")
+    @GetMapping(value = "logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
 
         TokenCache tokenCache = this.getToken();
@@ -62,7 +63,7 @@ public class UserController extends AbstractController<UserEntity> {
         session.removeAttribute(Parameter.TOKEN);
 
         try {
-            response.sendRedirect(request.getContextPath() + "/page/login");
+            response.sendRedirect(request.getContextPath() + "/admin/page/login");
         } catch (IOException e) {
             LOG.error("用户'{}'退出出现异常,{}", tokenCache.getName(), e.getMessage());
         }

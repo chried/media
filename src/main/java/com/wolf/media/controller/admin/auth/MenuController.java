@@ -9,15 +9,14 @@ import com.wolf.media.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author gaoweibing
  */
-@RestController("admin$auth$menu")
+@Controller("admin$auth$menu")
 @RequestMapping(value = "admin/auth/menu")
 public class MenuController extends AbstractController<MenuEntity> {
 
@@ -36,6 +35,19 @@ public class MenuController extends AbstractController<MenuEntity> {
         return menuService;
     }
 
+    /**
+     * 跳转页面;
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "getMenu")
+    public String getMenu(@RequestParam(value = "id") String id, Model model) {
+
+        model.addAttribute("menu", this.menuService.get_(id));
+        return "admin/system/addMenu";
+
+    }
 
     /**
      * query.
@@ -44,10 +56,11 @@ public class MenuController extends AbstractController<MenuEntity> {
      * @return
      */
     @PostMapping(value = "/query")
+    @ResponseBody
     public PageListApiOutput<MenuEntity> query(@RequestBody MenuQueryForm form) {
-
-        LOG.info("菜单查询.");
 
         return menuService.query(form);
     }
+
+
 }

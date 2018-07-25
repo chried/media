@@ -26,8 +26,13 @@ public interface MenuRepository extends AbstractRepository<MenuEntity> {
      */
     @Query(value =
             "select m from MenuEntity  m" +
-                    " where m.name like :name " +
+                    " where m.parentId = :parentId" +
+                    " and m.name like :name " +
                     " and m.sign like :sign " +
                     " and m.extend.status_ = :status_")
-    Page<MenuEntity> query(@Param("name") String name, @Param("sign") String sign, @Param("status_") String status_, Pageable pageable);
+    Page<MenuEntity> query(
+            @Param("parentId") String parentId,
+            @Param("name") String name,
+            @Param("sign") String sign,
+            @Param("status_") String status_, Pageable pageable);
 }

@@ -1,11 +1,11 @@
 package com.wolf.media.dto.system;
 
-import java.io.Serializable;
+import com.wolf.media.core.entity.QueryForm;
 
 /**
  * 菜单查询.
  */
-public class MenuQueryForm implements Serializable {
+public class MenuQueryForm extends QueryForm {
 
     /**
      * 名称.
@@ -16,6 +16,11 @@ public class MenuQueryForm implements Serializable {
      * 标记.
      */
     private String sign;
+
+    /**
+     * 父节点.
+     */
+    private String parentId;
 
     public String getName() {
         return name;
@@ -31,5 +36,13 @@ public class MenuQueryForm implements Serializable {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }
